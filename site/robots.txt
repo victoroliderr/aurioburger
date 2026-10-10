@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+# Quando o domínio definitivo estiver confirmado, acrescentar:
+# Sitemap: https://DOMINIO-DEFINITIVO/sitemap.xml
