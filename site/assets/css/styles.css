@@ -610,6 +610,12 @@ h3 { font-size: 1.25rem; font-weight: 600; }
 .site-footer ul a { display: inline-block; padding: 6px 0; text-decoration: none; color: var(--muted); overflow-wrap: anywhere; }
 .site-footer ul a:hover { color: var(--gold-hi); }
 .site-footer p + p { margin-top: 8px; }
+.footer-install {
+  display: inline-flex; align-items: center; gap: 8px; padding: 6px 0; min-height: 36px;
+  background: none; border: 0; color: var(--gold); font-family: var(--font-body); font-size: inherit; font-weight: 700;
+}
+.footer-install:hover { color: var(--gold-hi); }
+.footer-install .icon { width: 18px; height: 18px; }
 .footer-bottom {
   padding-bottom: 96px !important;
   display: grid; gap: 10px; margin-top: 48px; padding-block: 24px 32px;
@@ -650,6 +656,28 @@ body.has-cart { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
 @media (min-width: 960px) {
   .dock { display: none; }
   body.has-cart { padding-bottom: 0; }
+}
+
+/* ---------- Instalar a app (PWA) ---------- */
+.install {
+  position: fixed; z-index: 45;
+  left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom));
+  display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 16px 14px;
+  padding: 16px; border-radius: var(--radius);
+  background: var(--surface); border: 1px solid var(--line-strong);
+  box-shadow: 0 -8px 40px -12px rgba(247, 158, 10, 0.25), 0 24px 60px -16px rgba(0, 0, 0, 0.9);
+  animation: install-in 420ms var(--ease);
+}
+.install-icon { width: 60px; height: 60px; border-radius: 14px; }
+.install-copy h2 { font-size: 1.0625rem; line-height: 1.25; letter-spacing: -0.01em; }
+.install-copy p { margin: 4px 0 0; color: var(--muted); font-size: 0.875rem; line-height: 1.45; }
+.install-copy strong { color: var(--cream); font-weight: 700; }
+.install-copy .icon { width: 16px; height: 16px; vertical-align: -3px; color: var(--gold); }
+.install-actions { grid-column: 1 / -1; display: flex; gap: 10px; }
+.install-actions .btn { flex: 1; }
+@keyframes install-in { from { transform: translateY(24px); opacity: 0; } }
+@media (min-width: 640px) {
+  .install { left: auto; right: 24px; bottom: calc(24px + env(safe-area-inset-bottom)); width: 400px; }
 }
 
 /* ---------- Carrinho ---------- */

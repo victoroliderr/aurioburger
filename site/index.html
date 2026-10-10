@@ -28,16 +28,26 @@
   <meta name="twitter:image" content="assets/img/og-image.jpg">
 
   <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/img/icons/icon-192.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
+
+  <!-- App instalável (PWA) -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Aurio Burger">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
 
-  <script>document.documentElement.classList.add('js');</script>
+  <script>
+    document.documentElement.classList.add('js');
+    // Guarda o pedido de instalação da app caso chegue antes de main.js
+    window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); window.__installEvent = e; });
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -87,6 +97,8 @@
     <symbol id="i-phone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></symbol>
     <symbol id="i-map" viewBox="0 0 24 24"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></symbol>
     <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
     <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
   </svg>
 
@@ -566,6 +578,7 @@
           <li><a href="#como-encomendar">Como encomendar</a></li>
           <li><a href="#faq">Perguntas frequentes</a></li>
           <li><a href="https://wa.me/244937722482" data-wa="geral" target="_blank" rel="noopener">Encomendar</a></li>
+          <li><button type="button" class="footer-install" data-install-open hidden><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg> Instalar a app</button></li>
         </ul>
       </nav>
       <div>
@@ -597,6 +610,20 @@
       <svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg>
     </a>
   </div>
+
+  <!-- ============ INSTALAR A APP (PWA) ============ -->
+  <section class="install" data-install aria-labelledby="install-title" hidden>
+    <img class="install-icon" src="assets/img/icons/icon-192.png" width="192" height="192" alt="">
+    <div class="install-copy">
+      <h2 id="install-title">Instala a app Aurio Burger</h2>
+      <p data-install-text>Tem o menu sempre à mão, direto do ecrã principal do teu telemóvel.</p>
+      <p data-install-ios hidden>Toca em <svg class="icon" aria-hidden="true"><use href="#i-share"/></svg> <strong>Partilhar</strong> (no Safari pode estar dentro do menu <strong>⋯</strong>) e escolhe <strong>«Adicionar ao ecrã principal»</strong>.</p>
+    </div>
+    <div class="install-actions">
+      <button class="btn btn-primary btn-sm" type="button" data-install-accept><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg> Instalar</button>
+      <button class="btn btn-ghost btn-sm" type="button" data-install-dismiss>Agora não</button>
+    </div>
+  </section>
 
   <!-- ============ CARRINHO ============ -->
   <dialog class="cart" data-cart aria-labelledby="cart-title">

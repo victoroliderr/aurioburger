@@ -1,3 +1,14 @@
 [build]
   base = "."
   publish = "site"
+
+# PWA: o service worker deve ser sempre revalidado para as atualizações chegarem logo
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/site.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json; charset=utf-8"

@@ -395,6 +395,96 @@
     reveals.forEach(function (el) { el.classList.add('is-in'); });
   }
 
+  /* ---------- App (PWA): service worker e instalação ---------- */
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () { /* sem modo offline: o site funciona na mesma */ });
+    });
+  }
+
+  var install = $('[data-install]');
+  var installAccept = $('[data-install-accept]');
+  var installDismiss = $('[data-install-dismiss]');
+  var installText = $('[data-install-text]');
+  var installIOS = $('[data-install-ios]');
+  var installOpeners = $$('[data-install-open]');
+  var INSTALL_KEY = 'aurio-install-dismissed';
+  var INSTALL_SNOOZE = 7 * 24 * 60 * 60 * 1000; // volta a sugerir passados 7 dias
+  var INSTALL_DELAY = 3000;
+
+  var ua = navigator.userAgent;
+  var installEvent = window.__installEvent || null; // capturado no <head>
+  var isInstalled = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  var isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var isInAppBrowser = /FBAN|FBAV|Instagram|Line\/|TikTok|Snapchat/i.test(ua); // não permitem instalar
+  var iosHelp = isIOS && !isInAppBrowser; // o iOS não tem pedido automático: mostramos as instruções
+  var isMobile = window.matchMedia('(max-width: 959px), (pointer: coarse)').matches;
+  var autoScheduled = false;
+
+  function installSnoozed() {
+    try { return Date.now() - Number(localStorage.getItem(INSTALL_KEY) || 0) < INSTALL_SNOOZE; } catch (e) { return false; }
+  }
+  function snoozeInstall() {
+    try { localStorage.setItem(INSTALL_KEY, String(Date.now())); } catch (e) { /* modo privado: ignora */ }
+  }
+  function canInstall() { return !isInstalled && (installEvent || iosHelp); }
+
+  function updateInstallOpeners() {
+    installOpeners.forEach(function (b) { b.hidden = !canInstall(); });
+  }
+  function showInstall() {
+    if (!canInstall()) return;
+    var native = !!installEvent;
+    installText.hidden = !native;
+    installIOS.hidden = native;
+    installAccept.hidden = !native;
+    installDismiss.textContent = native ? 'Agora não' : 'Entendi';
+    install.hidden = false;
+  }
+  function hideInstall() { install.hidden = true; }
+
+  // Ao entrar no site (telemóvel), sugere a instalação uma vez, sem insistir
+  function scheduleInstallBanner() {
+    if (autoScheduled || !isMobile || !canInstall() || installSnoozed()) return;
+    autoScheduled = true;
+    setTimeout(showInstall, INSTALL_DELAY);
+  }
+
+  function promptInstall() {
+    if (!installEvent) { showInstall(); return; }
+    var e = installEvent;
+    installEvent = null; // cada pedido do navegador só pode ser usado uma vez
+    hideInstall();
+    e.prompt();
+    e.userChoice.then(function (choice) {
+      if (choice.outcome !== 'accepted') snoozeInstall();
+      updateInstallOpeners();
+    }).catch(function () {});
+  }
+
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    installEvent = e;
+    updateInstallOpeners();
+    scheduleInstallBanner();
+  });
+  window.addEventListener('appinstalled', function () {
+    isInstalled = true;
+    installEvent = null;
+    hideInstall();
+    updateInstallOpeners();
+  });
+
+  installAccept.addEventListener('click', promptInstall);
+  installDismiss.addEventListener('click', function () { snoozeInstall(); hideInstall(); });
+  install.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { snoozeInstall(); hideInstall(); }
+  });
+  installOpeners.forEach(function (b) { b.addEventListener('click', promptInstall); });
+
+  updateInstallOpeners();
+  scheduleInstallBanner();
+
   /* ---------- Ano automático ---------- */
   $$('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
 
