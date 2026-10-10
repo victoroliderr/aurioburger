@@ -277,7 +277,7 @@ h3 { font-size: 1.25rem; font-weight: 600; }
   margin-inline: calc(var(--gutter) * -1);
 }
 .hero-img {
-  height: clamp(280px, 44svh, 440px); width: auto; max-width: 100%;
+  height: clamp(240px, 38svh, 400px); width: auto; max-width: 100%;
   object-fit: contain;
   -webkit-mask-image: radial-gradient(ellipse 52% 50% at 50% 50%, #000 62%, transparent 100%);
   mask-image: radial-gradient(ellipse 52% 50% at 50% 50%, #000 62%, transparent 100%);
@@ -289,15 +289,15 @@ h3 { font-size: 1.25rem; font-weight: 600; }
 }
 
 .price-stamp {
-  position: absolute; right: max(var(--gutter), 6%); bottom: 6%;
-  width: 104px; height: 104px; border-radius: 50%;
+  position: absolute; right: max(var(--gutter), 4%); top: 2%;
+  width: 100px; height: 100px; border-radius: 50%;
   display: grid; place-content: center; text-align: center;
   background: var(--gold); color: var(--on-gold);
   transform: rotate(-10deg);
   box-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.8), inset 0 0 0 4px rgba(26, 18, 5, 0.12);
 }
-.ps-small { font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.2; }
-.ps-big { font-family: var(--font-display); font-weight: 700; font-size: 1.75rem; line-height: 1; margin-top: 3px; }
+.ps-small { font-size: 0.5rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.2; }
+.ps-big { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; line-height: 1; margin-top: 3px; }
 .ps-cur { font-weight: 800; font-size: 0.8125rem; line-height: 1; }
 
 .hero-copy h1 {
@@ -389,6 +389,7 @@ h3 { font-size: 1.25rem; font-weight: 600; }
 .product-desc { color: var(--muted); font-size: 0.9375rem; flex: 1; }
 .product-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .add-btn { flex: 1; }
+.product-body > .btn-block { white-space: normal; padding: 8px 14px; font-size: 0.875rem; gap: 8px; }
 .add-btn.is-added { border-color: var(--gold); color: var(--gold-hi); }
 
 .stepper {
@@ -440,12 +441,12 @@ h3 { font-size: 1.25rem; font-weight: 600; }
 .l.bun-top {
   height: 15cqw; width: 62cqw; border-radius: 50% 50% 12% 12% / 92% 92% 12% 12%;
   background:
-    radial-gradient(ellipse 1.1cqw 0.6cqw at 26% 34%, #f3dfb6 90%, transparent),
-    radial-gradient(ellipse 1.1cqw 0.6cqw at 40% 22%, #f3dfb6 90%, transparent),
-    radial-gradient(ellipse 1.1cqw 0.6cqw at 55% 30%, #f3dfb6 90%, transparent),
-    radial-gradient(ellipse 1.1cqw 0.6cqw at 68% 20%, #f3dfb6 90%, transparent),
-    radial-gradient(ellipse 1.1cqw 0.6cqw at 76% 40%, #f3dfb6 90%, transparent),
-    radial-gradient(ellipse 1.1cqw 0.6cqw at 47% 46%, #f3dfb6 90%, transparent),
+    radial-gradient(ellipse 1.6% 6% at 26% 34%, #f6e6c2 85%, transparent),
+    radial-gradient(ellipse 1.6% 6% at 40% 22%, #f6e6c2 85%, transparent),
+    radial-gradient(ellipse 1.6% 6% at 55% 30%, #f6e6c2 85%, transparent),
+    radial-gradient(ellipse 1.6% 6% at 68% 20%, #f6e6c2 85%, transparent),
+    radial-gradient(ellipse 1.6% 6% at 76% 40%, #f6e6c2 85%, transparent),
+    radial-gradient(ellipse 1.6% 6% at 47% 46%, #f6e6c2 85%, transparent),
     linear-gradient(180deg, #e9a548 0%, #c46e1f 100%);
 }
 .l.sauce { height: 3cqw; width: 60cqw; background: linear-gradient(180deg, #ef7041, #c9471f); }
@@ -585,7 +586,7 @@ h3 { font-size: 1.25rem; font-weight: 600; }
 .zone-grid { display: grid; gap: 48px; align-items: center; }
 .zone-copy .btn { margin-top: 28px; white-space: normal; }
 .zone-visual {
-  position: relative; aspect-ratio: 1; width: min(100%, 440px); justify-self: center;
+  position: relative; aspect-ratio: 1; width: min(100%, 320px); justify-self: center;
   display: grid; place-items: center;
 }
 .ring {
@@ -607,7 +608,7 @@ h3 { font-size: 1.25rem; font-weight: 600; }
 }
 .zone-label strong { font-family: var(--font-display); font-size: 1rem; }
 .zone-label small { color: var(--muted); font-size: 0.75rem; }
-@media (min-width: 960px) { .zone-grid { grid-template-columns: 1.1fr 1fr; gap: 72px; } }
+@media (min-width: 960px) { .zone-visual { width: min(100%, 440px); } .zone-grid { grid-template-columns: 1.1fr 1fr; gap: 72px; } }
 
 /* ---------- FAQ ---------- */
 .faq-grid { display: grid; gap: 8px; }
@@ -681,9 +682,11 @@ h3 { font-size: 1.25rem; font-weight: 600; }
 .site-footer ul a:hover { color: var(--gold-hi); }
 .site-footer p + p { margin-top: 8px; }
 .footer-bottom {
+  padding-bottom: 96px !important;
   display: grid; gap: 10px; margin-top: 48px; padding-block: 24px 32px;
   border-top: 1px solid var(--line); font-size: 0.875rem; color: var(--muted);
 }
+@media (min-width: 960px) { .footer-bottom { padding-bottom: 32px !important; } }
 @media (min-width: 768px) { .footer-grid { grid-template-columns: 1.4fr 1fr 1fr 1.2fr; } }
 
 /* ---------- Dock móvel ---------- */
@@ -702,6 +705,8 @@ h3 { font-size: 1.25rem; font-weight: 600; }
   transition: transform var(--t-fast) var(--ease);
 }
 .dock-wa:active { transform: scale(0.94); }
+.dock-wa.is-hidden { opacity: 0; transform: scale(0.6); pointer-events: none; visibility: hidden; }
+.dock-wa { transition: transform var(--t) var(--ease), opacity var(--t) ease, visibility 0s; }
 .dock-wa .icon { width: 28px; height: 28px; }
 .dock-cart {
   flex: 1; display: flex; align-items: center; gap: 10px;

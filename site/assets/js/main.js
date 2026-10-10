@@ -15,10 +15,12 @@
   var $$ = function (sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); };
 
   /* ---------- Utilitários ---------- */
-  function formatKz(value) {
-    // 1000 -> "1.000 Kz" (separador de milhares com ponto, como no menu)
-    return String(Math.round(value)).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' Kz';
+  function formatKz(value, plain) {
+    // 1000 -> "1.000 Kz" (separador de milhares com ponto, como no menu).
+    // Na interface usa espaço não separável; nas mensagens, espaço normal.
+    return String(Math.round(value)).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + (plain ? ' ' : '\u00a0') + 'Kz';
   }
+  function kz(value) { return formatKz(value, true); }
   function waLink(text) {
     return 'https://wa.me/' + WA_NUMBER + (text ? '?text=' + encodeURIComponent(text) : '');
   }
@@ -332,7 +334,8 @@
     $$('.main-nav a[href^="#"]').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
     var spy = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
-        if (!en.isIntersecting || !links[en.target.id]) return;
+        if (!en.isIntersecting) return;
+        // Secções fora da navegação (ex.: zona, FAQ) limpam o estado ativo
         Object.keys(links).forEach(function (k) {
           links[k].classList.toggle('is-active', k === en.target.id);
           if (k === en.target.id) links[k].setAttribute('aria-current', 'location');
@@ -340,7 +343,16 @@
         });
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
-    Object.keys(links).forEach(function (id) { var s = document.getElementById(id); if (s) spy.observe(s); });
+    $$('main > section[id]').forEach(function (s) { spy.observe(s); });
+
+    // Telemóvel: o botão flutuante do WhatsApp só aparece depois dos botões do hero
+    var heroCtas = $('.hero-copy .btn-row');
+    var dockWa = $('.dock-wa');
+    if (heroCtas && dockWa) {
+      new IntersectionObserver(function (entries) {
+        dockWa.classList.toggle('is-hidden', entries[0].isIntersecting);
+      }).observe(heroCtas);
+    }
   }
 
   /* ---------- Separadores "camada a camada" ---------- */
